@@ -12,10 +12,8 @@ def Logout(request):
     logout(request)
     return redirect('login')
 
-def Login(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-        
+@login_required(login_url='login')
+def Login(request): 
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
