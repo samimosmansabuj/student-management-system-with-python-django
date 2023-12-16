@@ -5,9 +5,11 @@ from django.template.loader import get_template
 from account.models import student, teacher
 from department.models import Department
 from django.core.mail import send_mail
+from sslcommerz_lib import SSLCOMMERZ
 from django.http import HttpResponse
 from django.contrib import messages
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from xhtml2pdf import pisa
 from .models import *
 import random
@@ -268,7 +270,7 @@ def student_promotion(request):
 # ------------------------Fees Collection Section start----------------------------
 @login_required(login_url='login')
 def invoice_list(request):
-    invoices = Invoice.objects.all().order_by('created_date')
+    invoices = Invoice.objects.all().order_by('-id')
     context = {'invoices': invoices}
     return render(request, 'fees/invoice_list.html', context)
 
@@ -308,6 +310,53 @@ def fees_collect(request):
     return render(request, 'fees/fees_collect.html')
 
 
+def registration_fee_confirm(request, id):
+    try:
+        registration = Registration_fees.objects.get(id=id)
+        context = {'registration': registration}
+        return render(request, 'fees/payment_confirm.html', context)
+    except:
+        return HttpResponse('Wrong Input')
+
+def registration_fee_confirm_processing(request):
+    if request.method == 'POST':
+        registration_id = request.POST['registration_id']
+        
+        name = request.POST['name']
+        payment_method = request.POST['payment_method']
+        registration = Registration_fees.objects.get(id=registration_id)
+        
+        if payment_method == 'Cash':
+            registration.is_paid = True
+            registration.payment_method = payment_method
+            registration.save()
+            
+            invoice = Invoice.objects.create(
+                student = registration.Student,
+                semester = registration.semester,
+                registration_fees = registration,
+                Invoice_id = random.randint(1111111111, 9999999999),
+                amount = registration.amount
+            )
+            invoice.save()
+            messages.success(request, "Paid Recived Successfully!")
+            return redirect(request.META['HTTP_REFERER'])
+        
+        elif payment_method == 'Bkash':
+            amount = registration.amount
+            name = registration.Student.first_name+' '+registration.Student.last_name
+            email = registration.Student.email
+            phone_number = registration.Student.phone_number
+            address = registration.Student.address
+            product_name = registration.title
+            product_category = registration.semester.title
+            tran_id = registration.id
+            data = {'amount': amount, 'name': name, 'email': email, 'phone_number': phone_number, 'address':address, 'product_name': product_name, 'product_category': product_category, 'tran_id': tran_id}
+            return online_payment(data)
+
+
+
+
 @login_required(login_url='login')
 def payment_confirm(request, id):
     context = {}
@@ -330,28 +379,125 @@ def payment_confirm(request, id):
             # students =student.objects.get(id=student_id)
             # Sem = Semesters.objects.filter(Student=students)
             
+            if payment_method == 'Cash':
+                installment.is_paid = True
+                installment.payment_method = payment_method
+                installment.save()
+                
+                invoice = Invoice.objects.create(
+                    student = installment.semester.Student,
+                    semester = installment.semester,
+                    installment = installment,
+                    Invoice_id = random.randint(1111111111, 9999999999),
+                    amount = installment.amount
+                )
+                invoice.save()
+                
+                messages.success(request, "Paid Recived Successfully!")
+                return redirect(request.META['HTTP_REFERER'])
             
-            installment.is_paid = True
-            installment.payment_method = payment_method
-            installment.save()
-            
-            invoice = Invoice.objects.create(
-                student = installment.semester.Student,
-                semester = installment.semester,
-                installment = installment,
-                Invoice_id = random.randint(1111111111, 9999999999),
+            elif payment_method == 'Bkash':
                 amount = installment.amount
-            )
-            invoice.save()
-            
-            messages.success(request, "Paid Recived Successfully!")
-            
-            # context = {'student': students, 'semesters': Sem}
-            
-            # return render(request, 'fees/student_fees_details.html', context)
-            return redirect(request.META['HTTP_REFERER'])
-
+                name = installment.semester.Student.first_name+' '+installment.semester.Student.last_name
+                email = installment.semester.Student.email
+                phone_number = installment.semester.Student.phone_number
+                address = installment.semester.Student.address
+                product_name = installment.title
+                product_category = installment.semester.title
+                tran_id = installment.id
+                data = {'amount': amount, 'name': name, 'email': email, 'phone_number': phone_number, 'address':address, 'product_name': product_name, 'product_category': product_category, 'tran_id': tran_id}
+                
+                return online_payment(data)
+                
     return render(request, 'fees/payment_confirm.html', context)
+
+
+
+def online_payment(data):
+    settings = { 'store_id': 'ecomm654bdaf1131e9', 'store_pass': 'ecomm654bdaf1131e9@ssl', 'issandbox': True }
+    sslcommez = SSLCOMMERZ(settings)
+    post_body = {}
+    post_body['total_amount'] = data['amount']
+    post_body['currency'] = "BDT"
+    post_body['tran_id'] = data['tran_id']
+    
+    post_body['success_url'] = "http://127.0.0.1:8000/student/payment-success/"
+    post_body['fail_url'] = "http://127.0.0.1:8000/student/payment-fail/"
+    post_body['cancel_url'] = "your cancel url"
+    
+    post_body['emi_option'] = 0
+    post_body['cus_name'] = data['name']
+    post_body['cus_email'] = data['email']
+    post_body['cus_phone'] = data['phone_number']
+    post_body['cus_add1'] = data['address']
+    post_body['cus_city'] = "Dhaka"
+    post_body['cus_country'] = "Bangladesh"
+    post_body['shipping_method'] = "NO"
+    post_body['multi_card_name'] = ""
+    post_body['num_of_item'] = 1
+    post_body['product_name'] = data['product_name']
+    post_body['product_category'] = data['product_category']
+    post_body['product_profile'] = "general"
+    post_body['value_b'] = data['product_name']
+
+
+    response = sslcommez.createSession(post_body)
+    return redirect(response['GatewayPageURL'])
+
+
+@csrf_exempt
+def payment_success(request):
+    post_body = request.POST
+    print(post_body)
+    id = post_body['tran_id']
+    title = post_body['value_b']
+    
+    if title == 'Registrations Fees':
+        registration = Registration_fees.objects.get(id=id)
+        registration.is_paid = True
+        registration.payment_method = 'Bkash'
+        registration.save()
+        
+        invoice = Invoice.objects.create(
+            student = registration.Student,
+            semester = registration.semester,
+            registration_fees = registration,
+            Invoice_id = random.randint(1111111111, 9999999999),
+            amount = registration.amount
+        )
+        invoice.save()
+            
+        messages.success(request, "Paid Recived Successfully!")
+        return redirect('registration_fee_confirm', id=id)
+    
+    return redirect('online_payment_processing', id=id)
+
+def online_payment_processing(request, id):
+    Installment = Installments.objects.get(id=id)
+    Installment.is_paid = True
+    Installment.payment_method = 'Bkash'
+    Installment.save()
+    
+    invoice = Invoice.objects.create(
+        student = Installment.semester.Student,
+        semester = Installment.semester,
+        installment = Installment,
+        Invoice_id = random.randint(1111111111, 9999999999),
+        amount = Installment.amount
+    )
+    invoice.save()
+          
+    messages.success(request, "Paid Recived Successfully!")
+    return redirect('payment_confirm', id=id)
+
+@csrf_exempt
+def payment_fail(request):
+    post_body = request.POST
+    Installment_id = post_body['tran_id']
+    return redirect('payment_confirm', id=Installment_id)
+
+
+
 
 
 

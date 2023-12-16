@@ -106,7 +106,7 @@ Deparment List - National Polytechnic Institute
                                                 <th>Invoice ID</th>
                                                 <th>Student Name</th>
                                                 <th>Semester</th>
-                                                <th>Installment</th>
+                                                <th>Installment/Registration</th>
                                                 <th>Amount</th>
                                                 <th>created_date</th>
                                                 <th class="text-end">Action</th>
@@ -131,7 +131,19 @@ Deparment List - National Polytechnic Institute
                                                     {{invoices.student.first_name}} {{invoices.student.last_name}}
                                                 </td>
                                                 <td>{{invoices.semester}}</td>
-                                                <td>{{invoices.installment}}</td>
+
+                                                
+                                                <td>
+                                                    {% if invoices.installment %}
+                                                    {{invoices.installment}}
+                                                    {% endif %}
+
+                                                    {% if invoices.registration_fees %}
+                                                    {{invoices.registration_fees.title}}
+                                                    {% endif %}
+                                                </td>
+                                                
+
                                                 <td>{{invoices.amount}}</td>
                                                 <td>{{invoices.created_date}}</td>
 

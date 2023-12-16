@@ -79,6 +79,7 @@ class Invoice(models.Model):
     student = models.ForeignKey(student, on_delete=models.DO_NOTHING)
     semester = models.ForeignKey(Semesters, on_delete=models.DO_NOTHING, blank=True, null=True)
     installment = models.ForeignKey(Installments, on_delete=models.DO_NOTHING, blank=True, null=True)
+    registration_fees = models.ForeignKey(Registration_fees, on_delete=models.DO_NOTHING, blank=True, null=True)
     
     Invoice_id = models.CharField(max_length=10)
     amount = models.DecimalField(max_digits=10, decimal_places=2)

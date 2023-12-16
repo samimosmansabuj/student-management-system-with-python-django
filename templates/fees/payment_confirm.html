@@ -23,7 +23,9 @@ Payment Details - National Polytechnic Institute
 
 
             <div class="col-6" style="text-align: center;">
+                {% if installment %}
                 <div class="invoices-create-btn">
+                    
                     {% if installment.is_paid is False %}
                     <a href="" class="btn btn-danger" aria-disabled="true">
                         Unpaid
@@ -33,11 +35,30 @@ Payment Details - National Polytechnic Institute
                         Paid Recived Successfully!
                     </a>
                     {% endif %}
+                    
                 </div>
+                {% endif %}
+
+                {% if registration %}
+                <div class="invoices-create-btn">
+                    
+                    {% if registration.is_paid is False %}
+                    <a href="" class="btn btn-danger" aria-disabled="true">
+                        Unpaid
+                    </a>
+                    {% else %}
+                    <a class="btn btn-primary" target="_blank" style="width: 80%; padding-left: 10px; padding-right: 10px;">
+                        Paid Recived Successfully!
+                    </a>
+                    {% endif %}
+                    
+                </div>
+                {% endif %}
             </div>
 
 
             <div class="col-3" style="text-align: center;">
+                {% if installment %}
                 <div class="invoices-create-btn">
                     {% if installment.is_paid is False %}
                     <a href="" class="btn btn-danger" aria-disabled="true">
@@ -49,6 +70,21 @@ Payment Details - National Polytechnic Institute
                     </a>
                     {% endif %}
                 </div>
+                {% endif %}
+                
+                {% if registration %}
+                <div class="invoices-create-btn">
+                    {% if registration.is_paid is False %}
+                    <a href="" class="btn btn-danger" aria-disabled="true">
+                        Pay Fast
+                    </a>
+                    {% else %}
+                    <a href="{% url 'invoice' registration.id %}" class="btn btn-primary" target="_blank">
+                        Print Invoice
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
 
 
@@ -61,7 +97,7 @@ Payment Details - National Polytechnic Institute
                 <div class="card-body">
 
 
-
+                    {% if installment %}
                     <form method="POST"> {% csrf_token %}
 
                         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -78,8 +114,7 @@ Payment Details - National Polytechnic Institute
                                             <div class="col-lg-6 col-md-6">
                                                 <div class="form-group">
                                                     <label>Student Name</label>
-                                                    <input type="text" class="form-control" placeholder="Add Name"
-                                                        value="{{installment.semester.Student}}" name="name" readonly>
+                                                    <input type="text" class="form-control" placeholder="Add Name" value="{{installment.semester.Student.first_name}} {{installment.semester.Student.last_name}}" name="name" readonly>
                                                 </div>
                                             </div>
 
@@ -103,12 +138,14 @@ Payment Details - National Polytechnic Institute
                                             <div class="col-lg-6 col-md-6">
                                                 <div class="form-group">
                                                     <label>Payment Method</label>
-                                                    <!-- <input type="text" class="form-control" placeholder="Add Bank name"> -->
+                                                    {% if installment.is_paid is False %}
                                                     <select name="payment_method" id="" class="form-control">
                                                         <option value="Cash">Cash</option>
                                                         <option value="Bkash">Bkash</option>
-                                                        <option value="Other">Other</option>
                                                     </select>
+                                                    {% else %}
+                                                    <input type="text" class="form-control" value="{{installment.payment_method}}" name="payment_method" readonly>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6">
@@ -130,10 +167,10 @@ Payment Details - National Polytechnic Institute
                                 </div>
                                 <div class="modal-footer">
                                     <div class="bank-details-btn">
+                                        
+                                        {% if installment.is_paid is False %}
                                         <a href="javascript:void(0);" data-bs-dismiss="modal"
                                             class="btn bank-cancel-btn me-2">Cancel</a>
-
-                                        {% if installment.is_paid is False %}
                                         <button type="submit" class="btn btn-primary">Pay</button>
                                         {% else %}
                                         <a href="{% url 'invoice' installment.id %}" class="btn btn-primary"
@@ -147,6 +184,96 @@ Payment Details - National Polytechnic Institute
                         </div>
                         
                     </form>
+                    {% endif %}
+
+                    {% if registration %}
+                    <form method="POST" action="{% url 'registration_fee_confirm_processing' %}"> {% csrf_token %}
+
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="form-header text-start mb-0">
+                                        <h4 class="mb-0">{{registration.semester}} | {{registration.title|title}} Payment
+                                            Details</h4>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="bank-inner-details">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Student Name</label>
+                                                    <input type="text" class="form-control" placeholder="Add Name" value="{{registration.Student.first_name}} {{registration.Student.last_name}}" name="name" readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Student Roll</label>
+                                                    <input type="text" class="form-control" placeholder="Add Name"
+                                                        value="{{registration.Student.roll_no}}" name="roll_no" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Registration ID No</label>
+                                                    <input type="text" class="form-control" placeholder="Add Name"
+                                                        value="{{registration.id}}" name="registration_id" readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Payment Method</label>
+                                                    {% if registration.is_paid is False %}
+                                                    <select name="payment_method" id="" class="form-control">
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Bkash">Bkash</option>
+                                                    </select>
+                                                    {% else %}
+                                                    <input type="text" class="form-control" value="{{registration.payment_method}}" name="payment_method" readonly>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Total Amount</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{registration.amount}}" name="amount" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Account Manager</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{request.user|title}}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="bank-details-btn">
+                                        
+                                        {% if registration.is_paid is False %}
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                            class="btn bank-cancel-btn me-2">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">Pay</button>
+                                        {% else %}
+                                        <a href="{% url 'invoice' registration.id %}" class="btn btn-primary"
+                                            target="_blank">
+                                            Print Invoice
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+                    {% endif %}
 
 
 
