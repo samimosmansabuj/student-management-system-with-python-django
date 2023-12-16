@@ -195,6 +195,7 @@ def student_promotion(request):
         semester = request.POST['semester']
         Student = student.objects.get(roll_no=roll_no)
         Student_Semester = Student.Students.all()
+        print(Student_Semester)
         weiver_tuition_fees = Student.tuition_fees_discount
         
         for Student_Semester in Student_Semester:
@@ -212,9 +213,26 @@ def student_promotion(request):
                 elif semester == '3rd Semester':
                     semester = Semesters.objects.create(Student=Student, title='4th Semester')
                     semester.save()
-                else:
+                elif semester == '4th Semester':
                     semester = Semesters.objects.create(Student=Student, title='5th Semester')
                     semester.save()
+                elif semester == '5th Semester':
+                    semester = Semesters.objects.create(Student=Student, title='6th Semester')
+                    semester.save()
+                elif semester == '6th Semester':
+                    semester = Semesters.objects.create(Student=Student, title='7th Semester')
+                    semester.save()
+                elif semester == '7th Semester':
+                    semester = Semesters.objects.create(Student=Student, title='8th Semester')
+                    semester.save()
+                elif semester == '8th Semester':
+                    Student.semester = 'Complete'
+                    Student.save()
+                    messages.success(request, 'Congratulations! Graduation Complete.')
+                    return redirect(request.META['HTTP_REFERER'])
+                else:
+                    messages.warning(request, 'Wrong Input!')
+                    return HttpResponse('Wrong Input')
                 
                 Student.semester = semester.title
                 Student.save()

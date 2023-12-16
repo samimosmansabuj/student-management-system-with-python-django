@@ -226,6 +226,9 @@ All Student - National Polytechnic Institute
 
                                                 <td>{{students.semester}}</td>
                                                 <td style="width: 20%;">
+                                                    {% if students.semester == 'Complete' %}
+                                                    
+                                                    {% else %}
                                                     <form method="POST" action="{% url 'student_promotion' %}">
                                                         {% csrf_token %}
                                                         <input type="hidden" name="roll_no"
@@ -235,6 +238,7 @@ All Student - National Polytechnic Institute
                                                         <input style="width: 40%;" type="text" name="result">
                                                         <button type="submit" class="btn-primary">Submit</button>
                                                     </form>
+                                                    {% endif %}
                                                 </td>
 
 
