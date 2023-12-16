@@ -1,0 +1,226 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+Student Payment Details - National Polytechnic Institute
+{% endblock title %}
+
+{% block body_content %}
+<div class="content container-fluid">
+
+    <div class="page-header invoices-page-header">
+        <div class="row align-items-center">
+
+            <div class="col-3" style="text-align: center;">
+                <div class="invoices-create-btn">
+                    <a href="{% url 'fees_collect' %}" class="btn btn-primary">
+                        Back
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="col-6" style="text-align: center;">
+                <div class="invoices-create-btn">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#save_invocies_details"
+                        class="btn save-invoice-btn" style="width: 80%; padding-left: 10px; padding-right: 10px;">
+                        {{student.first_name}} {{student.last_name}} | {{student.roll_no}} | {{student.semester}}
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="col-3" style="text-align: center;">
+                <div class="invoices-create-btn">
+                    <a href="{% url 'student_details' student.id %}" class="btn btn-primary">
+                        Student Details
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card invoices-add-card">
+                <div class="card-body">
+                    <form action="#" class="invoices-form">
+
+                        <div class="card-body" data-select2-id="10">
+                            <div class="row" data-select2-id="8">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Student Information</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Student ID <span class="login-danger"></span></label>
+                                        <input type="text" class="form-control" value="{{student.id}}" readonly
+                                            style="background-color: white;">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Student Name <span class="login-danger"></span></label>
+                                        <input type="text" class="form-control"
+                                            value="{{student.first_name}} {{student.last_name}}" readonly
+                                            style="background-color: white;">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Gender <span class="login-danger"></span></label>
+                                        <input type="text" class="form-control" value="{{student.gender}}" readonly
+                                            style="background-color: white;">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Student Roll <span class="login-danger"></span></label>
+                                        <input type="text" class="form-control" value="{{student.roll_no}}" readonly
+                                            style="background-color: white;">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Current Semester <span class="login-danger"></span></label>
+                                        <input type="text" class="form-control" value="{{student.semester}}" readonly
+                                            style="background-color: white;">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Deparment <span class="login-danger"></span></label>
+                                        <input type="text" class="form-control" value="{{student.department}}" readonly
+                                            style="background-color: white;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        {% for i in semesters %}
+                        <div class="invoice-add-table">
+                            <h4>Fees Information | {{i.title}}</h4>
+                            <div class="table-responsive">
+                                <table class="table table-center add-table-items">
+                                    <thead>
+                                        <tr>
+                                            <th>Semester</th>
+                                            <th>Title</th>
+                                            <th>Amount</th>
+                                            <th>Discount</th>
+                                            <th>Status</th>
+                                            <!-- <th>Actions</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for j in i.Semester.all %}
+                                        <tr class="add-row">
+                                            <td>
+                                                <input type="text" class="form-control" value="{{j.semester}}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{j.title}}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{j.amount}}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{j.discount}}">
+                                            </td>
+                                            <td>
+                                                {% if j.is_paid is True %}
+                                                <!-- <input type="text" class="form-control" value="Paid"> -->
+                                                <button style="width: 100px; background-color: white; border: 2px black solid; color: black; font-weight: bold;" class="btn btn-primary" disabled>Paid</button>
+                                                {% else %}
+
+                                                <a class="btn btn-primary" href="{% url 'payment_confirm' j.id %}"><i
+                                                        class="fas fa-plus-circle me-2"></i>Unpaid</a>
+
+
+                                                <!-- <a class="btn btn-primary" href="" data-bs-toggle="modal" data-bs-target="#payment"><i class="fas fa-plus-circle me-2"></i>Unpaid</a> -->
+
+                                                {% endif %}
+                                            </td>
+
+
+                                            <!-- <td class="add-remove text-end">
+                                                <a href="javascript:void(0);" class="add-btn me-2"><i
+                                                        class="fas fa-plus-circle"></i></a>
+                                                <a href="#" class="copy-btn me-2"><i class="fe fe-copy"></i></a><a
+                                                    href="javascript:void(0);" class="remove-btn"><i
+                                                        class="fe fe-trash-2"></i></a>
+                                            </td> -->
+
+                                            
+                                        </tr>
+                                        {% endfor %}
+
+
+                                        {% for k in i.Registration_fees_semester.all %}
+                                        <tr class="add-row">
+                                            <td>
+                                                <input type="text" class="form-control" value="{{k.semester}}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{k.title}}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="{{k.amount}}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="0">
+                                            </td>
+                                            <td>
+                                                {% if k.is_paid is True %}
+                                                <input type="text" class="form-control" value="Paid">
+                                                {% else %}
+
+                                                <a class="btn btn-primary" href="{% url 'payment_confirm' k.id %}"><i
+                                                        class="fas fa-plus-circle me-2"></i>Unpaid</a>
+
+
+                                                <!-- <a class="btn btn-primary" href="" data-bs-toggle="modal" data-bs-target="#payment"><i class="fas fa-plus-circle me-2"></i>Unpaid</a> -->
+
+                                                {% endif %}
+                                            </td>
+
+
+                                            <!-- <td class="add-remove text-end">
+                                                <a href="javascript:void(0);" class="add-btn me-2"><i
+                                                        class="fas fa-plus-circle"></i></a>
+                                                <a href="#" class="copy-btn me-2"><i class="fe fe-copy"></i></a><a
+                                                    href="javascript:void(0);" class="remove-btn"><i
+                                                        class="fe fe-trash-2"></i></a>
+                                            </td> -->
+
+                                            
+                                        </tr>
+                                        {% endfor %}
+
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        {% endfor %}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+{% endblock body_content %}

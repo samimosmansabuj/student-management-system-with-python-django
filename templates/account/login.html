@@ -1,0 +1,68 @@
+{% extends './login_base.html' %}
+
+{% block seller_login_page_title %}
+<title>NPI System - Login</title>
+{% endblock seller_login_page_title %}
+
+
+{% block login_base_content %}
+<div class="login-right" style="width: 100%;">
+    
+    <div class="login-right-wrap">
+        <h1>Welcome to National Polytechnic Institute</h1>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong>{{message}}!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
+        {% endfor %}
+        {% endif %}
+
+        <h2>Sign in</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Username <span class="login-danger">*</span></label>
+                <input class="form-control" type="text" name="username">
+                <span class="profile-views"><i class="fas fa-user-circle"></i></span>
+            </div>
+            <div class="form-group">
+                <label>Password <span class="login-danger">*</span></label>
+                <input class="form-control pass-input" type="password" name="password">
+                <span class="profile-views feather-eye-off toggle-password"></span>
+            </div>
+            <div class="forgotpass">
+                <div class="remember-me">
+                    <label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> Remember me
+                        <input type="checkbox" name="radio">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <a href="{% url 'forget_password' %}">Forgot Password?</a>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit">Login</button>
+            </div>
+        </form>
+
+        <div class="login-or">
+            <span class="or-line"></span>
+            <span class="span-or">or</span>
+        </div>
+
+        <div class="social-login">
+            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+
+    </div>
+</div>
+{% endblock login_base_content %}

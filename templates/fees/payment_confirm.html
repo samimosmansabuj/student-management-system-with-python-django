@@ -1,0 +1,166 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+Payment Details - National Polytechnic Institute
+{% endblock title %}
+
+{% block body_content %}
+<div class="content container-fluid">
+
+    <div class="page-header invoices-page-header">
+        <div class="row align-items-center">
+
+
+
+            <div class="col-3" style="text-align: center;">
+                <div class="invoices-create-btn">
+                    <a href="{% url 'fees_collect' %}" class="btn btn-primary">
+                        Back
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="col-6" style="text-align: center;">
+                <div class="invoices-create-btn">
+                    {% if installment.is_paid is False %}
+                    <a href="" class="btn btn-danger" aria-disabled="true">
+                        Unpaid
+                    </a>
+                    {% else %}
+                    <a class="btn btn-primary" target="_blank" style="width: 80%; padding-left: 10px; padding-right: 10px;">
+                        Paid Recived Successfully!
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="col-3" style="text-align: center;">
+                <div class="invoices-create-btn">
+                    {% if installment.is_paid is False %}
+                    <a href="" class="btn btn-danger" aria-disabled="true">
+                        Pay Fast
+                    </a>
+                    {% else %}
+                    <a href="{% url 'invoice' installment.id %}" class="btn btn-primary" target="_blank">
+                        Print Invoice
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card invoices-add-card">
+                <div class="card-body">
+
+
+
+                    <form method="POST"> {% csrf_token %}
+
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="form-header text-start mb-0">
+                                        <h4 class="mb-0">{{installment.semester}} | {{installment.title|title}} Payment
+                                            Details</h4>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="bank-inner-details">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Student Name</label>
+                                                    <input type="text" class="form-control" placeholder="Add Name"
+                                                        value="{{installment.semester.Student}}" name="name" readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Student Roll</label>
+                                                    <input type="text" class="form-control" placeholder="Add Name"
+                                                        value="{{installment.semester.Student.roll_no}}" name="roll_no" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Installment ID No</label>
+                                                    <input type="text" class="form-control" placeholder="Add Name"
+                                                        value="{{installment.id}}" name="ins_id" readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Payment Method</label>
+                                                    <!-- <input type="text" class="form-control" placeholder="Add Bank name"> -->
+                                                    <select name="payment_method" id="" class="form-control">
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Bkash">Bkash</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Total Amount</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{installment.amount}}" name="amount" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Account Manager</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{request.user|title}}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="bank-details-btn">
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                            class="btn bank-cancel-btn me-2">Cancel</a>
+
+                                        {% if installment.is_paid is False %}
+                                        <button type="submit" class="btn btn-primary">Pay</button>
+                                        {% else %}
+                                        <a href="{% url 'invoice' installment.id %}" class="btn btn-primary"
+                                            target="_blank">
+                                            Print Invoice
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
+{% endblock body_content %}

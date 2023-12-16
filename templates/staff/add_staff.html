@@ -1,0 +1,170 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+Staff Add - National Polytechnic Institute
+{% endblock title %}
+
+{% block body_content %}
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Add Staffs</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Staffs</a></li>
+                    <li class="breadcrumb-item active">Add Staffs</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
+
+                        <div class="row">
+                        
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Basic Details</span></h5>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="profile-user-box">
+                                    <div class="profile-user-img">
+                                        <img src="/media/teacher_avatar.png" alt="Profile" style="border: 2px black solid;">
+                                        <div class="form-group students-up-files profile-edit-icon mb-0">
+                                            <div class="uplod d-flex">
+                                                <label class="file-upload profile-upbtn mb-0">
+                                                    <i class="feather-edit-3"></i><input type="file" name="staff_image">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Full Name <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter First Name" name="first_name">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Staff Designation <span class="login-danger">*</span></label>
+                                    <select name="staff_designation" class="form-control" id="" required>
+                                        <option disabled selected>Staff Designation</option>
+                                        <option value="Account">Account</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Register">Register</option>
+                                        <option value="Admission Officer">Admission Officer</option>
+                                        <option value="Chief Administrative Officer">Chief Administrative Officer</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Gender <span class="login-danger">*</span></label>
+                                    <select class="form-control select select2-hidden-accessible" data-select2-id="1"
+                                        tabindex="-1" aria-hidden="true" name="gender">
+                                        <option data-select2-id="3">Select Gender</option>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                        <option>Others</option>
+                                    </select>
+                                    <!-- <span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="2" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-lyo8-container"><span class="select2-selection__rendered" id="select2-lyo8-container" role="textbox" aria-readonly="true" title="Male">Male</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Mobile <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Phone" name="phone_number">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Experience <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" placeholder="Enter Experience" name="job_experience">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Login Details</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Username <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Username" name="username">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Email ID <span class="login-danger">*</span></label>
+                                    <input type="email" class="form-control" placeholder="Enter Mail Id" name="email">
+                                </div>
+                            </div>
+
+
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Address</span></h5>
+                            </div>
+
+                            <div class="col-8">
+                                <div class="form-group local-forms">
+                                    <label>Address <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter address *(Area/Street, City, District, Country)" name="address">
+                                </div>
+                            </div>
+
+
+
+                            <!-- <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>City <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter City">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>State <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter State">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Zip Code <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Zip">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Country <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter Country">
+                                </div>
+                            </div> -->
+
+
+
+                            
+                            <div class="col-12">
+                                <div class="student-submit">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body_content %}

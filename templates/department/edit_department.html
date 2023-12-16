@@ -1,0 +1,87 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+Update Department - National Polytechnic Institute
+{% endblock title %}
+
+{% block body_content %}
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Update Department</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Department</a></li>
+                    <li class="breadcrumb-item active">Update Department</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST"> {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Department Details</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Department Code <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" name="department_code" value="{{depart.department_code}}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Department Name <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" name="title" value="{{depart.title}}">
+                                </div>
+                            </div>
+                            <!-- <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>Head of Department <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div> -->
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms calendar-icon">
+                                    <label>Department Start Date <span class="login-danger">*</span></label>
+                                    <input class="form-control datetimepicker" type="text" placeholder="DD-MM-YYYY" name="established_date" value="{{depart.established_date}}" readonly disabled style="background-color: white;">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms calendar-icon">
+                                    <label>Head Of Department <span class="login-danger">*</span></label>
+                                    <select name="HOD" class="form-control local-forms">
+                                        <option value="{{depart.HOD}}">{{depart.HOD}}</option>
+                                        {% for Teachers in Teachers %}
+                                        <option value="{{Teachers.first_name}} {{Teachers.last_name}}">{{Teachers.first_name}} {{Teachers.last_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-4">
+                                <div class="form-group local-forms">
+                                    <label>No of Students <span class="login-danger">*</span></label>
+                                    <input type="text" class="form-control" value="{{Student.count}}" readonly disabled style="background-color: white;">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="student-submit">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body_content %}

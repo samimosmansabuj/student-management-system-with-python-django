@@ -1,0 +1,166 @@
+{% load static %}
+{% url 'home' as home_url %}
+{% url 'add_student' as add_student_url %}
+{% url 'add_teacher' as add_teacher_url %}
+{% url 'students' as students_list_url %}
+{% url 'teacher' as teacher_list_url %}
+{% url 'department_list' as department_list_url %}
+{% url 'add_department' as add_department_url %}
+
+{% url 'staff_list' as staff_list_url %}
+{% url 'add_staff' as add_staff_url %}
+
+{% url 'fees_collect' as fees_collect_url %}
+{% url 'invoice_list' as invoice_list_url %}
+
+
+<li class="menu-title">
+    <span>Main Menu</span>
+</li>
+
+
+<li class="active">
+    {% if request.user.is_teacher == True %}
+    <a href="{{home_url}}" {% if request.path == home_url %} class="active" {% endif %}>
+        <i class="feather-grid"></i> <span> Teacher Dashboard</span>
+    </a>
+    {% elif request.user.is_student == True %}
+    <a href="{{home_url}}" {% if request.path == home_url %} class="active" {% endif %}>
+        <i class="feather-grid"></i> <span> Student Dashboard</span>
+    </a>
+    {% else %}
+    <a href="{{home_url}}" {% if request.path == home_url %} class="active" {% endif %}>
+        <i class="feather-grid"></i> <span> Admin Dashboard</span>
+    </a>
+    {% endif %}
+</li>
+
+{% if request.user.is_staff == True %}
+<li class="submenu">
+    <a href="#"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{students_list_url}}" {% if request.path == students_list_url %} class="active" {% endif %}>Student
+                List</a></li>
+        <li><a href="{{add_student_url}}" {% if request.path == add_student_url %} class="active" {% endif %}>Student
+                Add</a></li>
+
+        <!-- <li><a href="edit-student.html">Student Edit</a></li> -->
+        <!-- <li><a href="student-details.html">Student View</a></li> -->
+    </ul>
+</li>
+
+<li class="submenu">
+    <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{teacher_list_url}}" {% if request.path == teacher_list_url %} class="active" {% endif %}>Teacher
+                List</a></li>
+        <li><a href="{{add_teacher_url}}" {% if request.path == add_teacher_url %} class="active" {% endif %}>Teacher
+                Add</a></li>
+
+
+        <!-- <li><a href="edit-teacher.html">Teacher Edit</a></li> -->
+        <!-- <li><a href="teacher-details.html">Teacher View</a></li> -->
+    </ul>
+</li>
+
+<li class="submenu">
+    <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li>
+            <a href="{{department_list_url}}"{% if request.path == department_list_url %} class="active" {% endif %}>Department List</a>
+        </li>
+        <li>
+            <a href="{{add_department_url}}"{% if request.path == add_department_url %} class="active" {% endif %}>Department Add</a>
+        </li>
+    </ul>
+</li>
+
+<li class="submenu">
+    <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Staffs</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li>
+            <a href="{{staff_list_url}}"{% if request.path == staff_list_url %} class="active" {% endif %}>Staff List</a>
+        </li>
+        <li>
+            <a href="{{add_staff_url}}"{% if request.path == add_staff_url %} class="active" {% endif %}>Add Staff</a>
+        </li>
+    </ul>
+</li>
+
+<!-- <li class="submenu">
+    <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="subjects.html">Subject List</a></li>
+        <li><a href="add-subject.html">Subject Add</a></li>
+        <li><a href="edit-subject.html">Subject Edit</a></li>
+    </ul>
+</li> -->
+
+<li class="submenu">
+    <a href="#"><i class="fas fa-clipboard"></i> <span> Invoices</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{invoice_list_url}}" {% if request.path == invoice_list_url %} class="active" {% endif %}>Invoices List</a></li>
+        <li><a href="{{fees_collect_url}}" {% if request.path == fees_collect_url %} class="active" {% endif %}>Add Invoices</a></li>
+
+        <!-- <li><a href="">Invoices Details</a></li>
+        <li><a href="">Invoices Settings</a></li> -->
+    </ul>
+</li>
+
+{% endif %}
+
+
+
+
+
+
+{% if request.user.is_teacher == True %}
+<li class="submenu">
+    <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{teacher_list_url}}" {% if request.path == teacher_list_url %} class="active" {% endif %}>Teacher
+                List</a></li>
+
+        <!-- <li><a href="edit-teacher.html">Teacher Edit</a></li> -->
+        <!-- <li><a href="teacher-details.html">Teacher View</a></li> -->
+    </ul>
+</li>
+
+<li class="submenu">
+    <a href="#"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{students_list_url}}" {% if request.path == students_list_url %} class="active" {% endif %}>Student
+                List</a></li>
+        <li><a href="{{add_student_url}}" {% if request.path == add_student_url %} class="active" {% endif %}>Student
+                Add</a></li>
+
+        <!-- <li><a href="edit-student.html">Student Edit</a></li> -->
+        <!-- <li><a href="student-details.html">Student View</a></li> -->
+    </ul>
+</li>
+
+<li class="submenu">
+    <a href="#"><i class="fas fa-clipboard"></i> <span> Invoices</span> <span class="menu-arrow"></span></a>
+    <ul>
+        <li><a href="{{fees_collect_url}}" {% if request.path == fees_collect_url %} class="active" {% endif %}>Add Invoices</a></li>
+
+        <!-- <li><a href="">Invoices Details</a></li>
+        <li><a href="">Invoices Settings</a></li> -->
+    </ul>
+</li>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+{% if request.user.is_student == True %}
+<li>
+    <a href="{% url 'student_details' request.user.id %}"><i class="fas fa-graduation-cap"></i> <span> Students</span></a>
+</li>
+{% endif %}

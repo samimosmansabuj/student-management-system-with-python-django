@@ -1,0 +1,305 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+All Student - National Polytechnic Institute
+{% endblock title %}
+
+{% block body_content %}
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-sub-header">
+                    <h3 class="page-title">Students</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Student</a></li>
+                        <li class="breadcrumb-item active">All Student</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="student-group-form">
+        <form action="{% url 'filter_student' %}" method="GET">
+            
+
+            <div class="row">
+                <div class="col-lg-2 col-md-6">
+                    <div class="form-group">
+                        <!-- <input type="text" class="form-control" placeholder="Search by ID ..."> -->
+                        <select name="department" id="" class="form-control">
+                            {% if depart %}
+                            <option value="{{depart}}">{{depart}}</option>
+                            {% endif %}
+                            <option value="">Select Department</option>
+                            
+
+
+                            {% for department in department %}
+                            <option value="{{department.title}}">{{department.title}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <div class="form-group">
+                        <!-- <input type="text" class="form-control" placeholder="Search by Name ..."> -->
+                        <select name="semester" id="" class="form-control">
+                            {% if semester %}
+                            <option value="{{semester}}">{{semester}}</option>
+                            {% endif %}
+                            <option value="">Select Semester</option>
+                            <option value="1st Semester">1st Semester</option>
+                            <option value="2nd Semester">2nd Semester</option>
+                            <option value="3rd Semester">3rd Semester</option>
+                            <option value="4th Semester">4th Semester</option>
+                            <option value="5th Semester">5th Semester</option>
+                            <option value="6th Semester">6th Semester</option>
+                            <option value="7th Semester">7th Semester</option>
+                            <option value="8th Semester">8th Semester</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="form-group">
+                        {% if search_kay %}
+                        <input type="text" class="form-control" value="{{search_kay}}" name="search_kay">
+                        {% else %}
+                        <input type="text" class="form-control" placeholder="Search by Phone ..." name="search_kay">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="search-student-btn">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="search-student-btn">
+                        <button class="btn btn-primary" name="reset" value="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table comman-shadow">
+                <div class="card-body">
+
+                    <div class="page-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 class="page-title">Students</h3>
+                            </div>
+                            <div class="col-auto text-end float-end ms-auto download-grp">
+                                <a href="{% url 'add_student' %}" class="btn btn-primary"><i
+                                        class="fas fa-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+                            <!-- <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length" id="DataTables_Table_0_length">
+                                        <label>Show 
+                                            <select
+                                                name="DataTables_Table_0_length" aria-controls="DataTables_Table_0"
+                                                class="custom-select custom-select-sm form-control form-control-sm">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select> entries
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6"></div>
+                            </div> -->
+
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table
+                                        class="table border-0 star-student table-hover table-center mb-0 datatable table-striped dataTable no-footer"
+                                        id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                        <thead class="student-thread">
+                                            <tr role="row">
+                                                <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label=": activate to sort column descending"
+                                                    style="width: 22.5px;">
+                                                    <div class="form-check check-tables">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            value="something">
+                                                    </div>
+                                                </th>
+
+                                                <!-- <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="ID: activate to sort column ascending">ID</th> -->
+
+                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Name: activate to sort column ascending">Name</th>
+
+                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Class: activate to sort column ascending">Department
+                                                </th>
+
+                                                <!-- <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="DOB: activate to sort column ascending">DOB</th> -->
+
+                                                <!-- <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Gender: activate to sort column ascending">Gender</th> -->
+
+                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Mobile Number: activate to sort column ascending">Mobile
+                                                    Number</th>
+
+                                                <!-- <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Email: activate to sort column ascending">Email</th> -->
+
+                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Roll: activate to sort column ascending">Roll</th>
+
+                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Roll: activate to sort column ascending">Semester</th>
+
+                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Roll: activate to sort column ascending">Result</th>
+
+                                                <!-- <th class="text-end sorting" tabindex="0"
+                                                    aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                    aria-label="Action: activate to sort column ascending">Action</th> -->
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for students in students %}
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1">
+                                                    <div class="form-check check-tables">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            value="something">
+                                                    </div>
+                                                </td>
+                                                <!-- <td>{{students.id}}</td> -->
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        {% if students.student_image %}
+                                                        <a href="{% url 'student_details' students.id %}"
+                                                            class="avatar avatar-sm me-2"><img
+                                                                class="avatar-img rounded-circle"
+                                                                src="{{students.student_image.url}}"
+                                                                alt="User Image"></a>
+                                                        {% endif %}
+
+                                                        <a
+                                                            href="{% url 'student_details' students.id %}">{{students.first_name}}</a>
+                                                    </h2>
+                                                </td>
+                                                <td>{{students.department}}</td>
+                                                <!-- <td>{{students.date_of_birth|date:"Y-m-d"}}</td> -->
+                                                <!-- <td>{{students.gender}}</td> -->
+                                                <td>{{students.phone_number}}</td>
+                                                <!-- <td>{{students.email}}</td> -->
+                                                <td>{{students.roll_no}}</td>
+
+                                                <td>{{students.semester}}</td>
+                                                <td style="width: 20%;">
+                                                    <form method="POST" action="{% url 'student_promotion' %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="roll_no"
+                                                            value="{{students.roll_no}}">
+                                                        <input type="hidden" name="semester"
+                                                            value="{{students.semester}}">
+                                                        <input style="width: 40%;" type="text" name="result">
+                                                        <button type="submit" class="btn-primary">Submit</button>
+                                                    </form>
+                                                </td>
+
+
+
+
+                                                <!-- <td class="text-end">
+                                                    <div class="actions ">
+                                                        <a href="{% url 'student_details' students.id %}"
+                                                            class="btn btn-sm bg-success-light me-2 ">
+                                                            <i class="feather-eye"></i>
+                                                        </a>
+                                                        <a href="edit-student.html" class="btn btn-sm bg-danger-light">
+                                                            <i class="feather-edit"></i>
+                                                        </a>
+                                                    </div>
+                                                </td> -->
+
+
+                                            </tr>
+                                            {% endfor %}
+
+
+
+
+
+
+                                        </tbody>
+
+                                        {% if user_not_fount %}
+                                        <h3 style="text-align: center;">{{user_not_fount}}</h3>
+                                        {% endif %}
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status"
+                                        aria-live="polite">Showing 1 to 10 of 11 entries</div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers"
+                                        id="DataTables_Table_0_paginate">
+                                        <ul class="pagination">
+                                            <li class="paginate_button page-item previous disabled"
+                                                id="DataTables_Table_0_previous"><a href="#"
+                                                    aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0"
+                                                    class="page-link">Previous</a></li>
+                                            <li class="paginate_button page-item active"><a href="#"
+                                                    aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0"
+                                                    class="page-link">1</a></li>
+                                            <li class="paginate_button page-item "><a href="#"
+                                                    aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0"
+                                                    class="page-link">2</a></li>
+                                            <li class="paginate_button page-item next" id="DataTables_Table_0_next"><a
+                                                    href="#" aria-controls="DataTables_Table_0" data-dt-idx="3"
+                                                    tabindex="0" class="page-link">Next</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body_content %}

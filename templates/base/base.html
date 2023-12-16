@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    
+    <title>{% block title %} NPI - National Polytechnic Institute {% endblock title %}</title>
+    <link rel="shortcut icon" href="{% static 'img/npi.png' %}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/feather/feather.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/icons/flags/flags.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        {% include './header.html' %}
+
+
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+
+
+                        {% include './sidebar-main-menu.html' %}
+
+
+                        <!-- {% include './sidebar-management-menu.html' %} -->
+
+
+                        <li>
+                            <a href="{% url 'logout' %}"><i class="fas fa-cog"></i> <span>Logout</span></a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="page-wrapper">
+
+
+            {% block body_content %}
+            <h1>This is base page body</h1>
+            {% endblock body_content %}
+
+
+
+
+            <footer>
+                <p>Copyright © 2023 NPI. Developer By <b><a href="https://www.facebook.com/samim.o.sabuj03/" target="_blank">Samim Osman Sabuj</a></b></p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/feather.min.js' %}"></script>
+    <script src="{% static 'plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+    <script src="{% static 'plugins/apexchart/apexcharts.min.js' %}"></script>
+    <script src="{% static 'plugins/apexchart/chart-data.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>
