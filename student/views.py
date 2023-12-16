@@ -309,7 +309,7 @@ def fees_collect(request):
     
     return render(request, 'fees/fees_collect.html')
 
-
+@login_required(login_url='login')
 def registration_fee_confirm(request, id):
     try:
         registration = Registration_fees.objects.get(id=id)
@@ -318,6 +318,7 @@ def registration_fee_confirm(request, id):
     except:
         return HttpResponse('Wrong Input')
 
+@login_required(login_url='login')
 def registration_fee_confirm_processing(request):
     if request.method == 'POST':
         registration_id = request.POST['registration_id']
@@ -500,7 +501,7 @@ def payment_fail(request):
 
 
 
-
+@login_required(login_url='login')
 def invoice(request, id):
     installment = Installments.objects.get(id=id)
     student_id = installment.semester.Student.id
