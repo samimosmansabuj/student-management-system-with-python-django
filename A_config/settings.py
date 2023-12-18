@@ -140,5 +140,5 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "samim.o.sabuj01@gmail.com"
-EMAIL_HOST_PASSWORD ="sfewnfmttelutzpy"
+EMAIL_HOST_PASSWORD ="nuudqfvtlzydnifo"
 

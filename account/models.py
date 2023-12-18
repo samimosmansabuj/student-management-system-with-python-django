@@ -109,6 +109,8 @@ class student(User):
     semester = models.CharField(max_length=40)
     tuition_fees_discount = models.IntegerField(blank=True, null=True)
     
+    otp_token = models.CharField(max_length=6, blank=True, null=True)
+    
     is_varified = models.BooleanField(default=False)
     
     def __str__(self) -> str:
