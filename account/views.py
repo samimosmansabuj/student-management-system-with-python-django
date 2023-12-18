@@ -12,7 +12,6 @@ def Logout(request):
     logout(request)
     return redirect('login')
 
-@login_required(login_url='login')
 def Login(request): 
     if request.method == 'POST':
         username = request.POST['username']
