@@ -104,7 +104,7 @@ class student(User):
     roll_no = models.PositiveIntegerField(blank=True)
     religion = models.CharField(choices=RELIGION, max_length=10, blank=True, null=False)
     phone_number = models.TextField()
-    student_image = models.ImageField(upload_to='student/img/', blank=True, null=False)
+    student_image = models.ImageField(upload_to='student/img/', blank=True, null=False, default='student_avatar.png/')
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='student_deparment', blank=True, null=True)
     semester = models.CharField(max_length=40)
     tuition_fees_discount = models.IntegerField(blank=True, null=True)

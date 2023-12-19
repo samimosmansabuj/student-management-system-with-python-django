@@ -2,8 +2,9 @@ from student.models import Semesters, Installments, Invoice, Registration_fees
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
-from account.models import student, teacher
+from account.models import student, teacher, User
 from department.models import Department
+from notifications.signals import notify
 from django.core.mail import send_mail
 from sslcommerz_lib import SSLCOMMERZ
 from django.http import HttpResponse
@@ -17,7 +18,6 @@ import random
 
 
 
-# Create your views here.
 # ---------------------Add Student Section Start------------------
 @login_required(login_url='login')
 def add_student(request):
@@ -45,8 +45,9 @@ def add_student(request):
         religion = request.POST['religion']
         email = request.POST['email']
         phone_number = request.POST['phone_number']
-        image = request.FILES['image']
+        image = request.FILES.get('image')
         username = 'user'+phone_number
+        print(username)
         password = roll_no
         semester = request.POST['semester']
         if request.POST['weiver_tuition_fees']:
@@ -54,13 +55,15 @@ def add_student(request):
         else:
             weiver_tuition_fees = 0
         
-        user = student.objects.create(username=username, first_name=first_name, last_name=last_name, date_of_birth=date_of_birth, gender=gender, roll_no=roll_no, blood_group=blood_group, religion=religion, email=email, department=depart, student_image=image, phone_number=phone_number, semester=semester, tuition_fees_discount=weiver_tuition_fees)
-        user.set_password(password)
-        user.is_student = True
-        user.is_varified = True
-        user.save()
+        new_student = student.objects.create(username=username, first_name=first_name, last_name=last_name, date_of_birth=date_of_birth, gender=gender, roll_no=roll_no, blood_group=blood_group, religion=religion, email=email, department=depart, phone_number=phone_number, semester=semester, tuition_fees_discount=weiver_tuition_fees)
+        if image:
+            new_student.student_image=image
+        new_student.set_password(password)
+        new_student.is_student = True
+        new_student.is_varified = True
+        new_student.save()
         
-        semester = Semesters.objects.create(Student=user, title=semester)
+        semester = Semesters.objects.create(Student=new_student, title=semester)
         semester.save()
         
         amount = 3750 - (3750 * int(weiver_tuition_fees)/100)
@@ -73,17 +76,32 @@ def add_student(request):
         third_installment = Installments.objects.create(semester=semester, title="3rd Installment", discount=weiver_tuition_fees, amount=amount)
         third_installment.save()
         
-        
         fourth_installment = Installments.objects.create(semester=semester, title="4th Installment", discount=weiver_tuition_fees, amount=amount)
         fourth_installment.save()
         
+        registration_amount = 1600
+        registration_fees = Registration_fees.objects.create(
+            Student = new_student,
+            semester = semester,
+            amount = registration_amount,
+        )
+        registration_fees.save()
         
-        
+        send_notification_add_student(new_student)
         send_mail_student_add(email, username, password)
         
         return redirect('students')
         
     return render(request, 'student/add_student.html', context)
+
+
+
+def send_notification_add_student(new_student):
+    admin = User.objects.get(id=5)
+    verb=f"Congratulations {new_student.first_name}, Welcome to Our New Student!"
+    print('admin: ', admin, '   student: ',student, '   verb: ', verb)
+    notify.send(admin, recipient=new_student, verb=verb)
+
 
 
 def send_mail_student_add(email, username, password):
@@ -98,6 +116,7 @@ def send_mail_student_add(email, username, password):
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
 # ---------------------Add Student Section Start------------------
+
 
 @login_required(login_url='login')
 def all_student(request):
@@ -308,6 +327,8 @@ def fees_collect(request):
         return render(request, 'fees/student_fees_details.html', context)
     
     return render(request, 'fees/fees_collect.html')
+
+
 
 @login_required(login_url='login')
 def registration_fee_confirm(request, id):

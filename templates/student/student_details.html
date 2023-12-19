@@ -256,22 +256,39 @@
                                             </td>
                                             <td>
                                                 {% if j.is_paid is True %}
-
-                                                <!-- <input type="text" class="form-control" value="Paid"> -->
                                                 <p>Paid</p>
-
                                                 {% else %}
-
-                                                <a class="btn btn-primary" href="{% url 'payment_confirm' j.id %}"><i
-                                                        class="fas fa-plus-circle me-2"></i>Unpaid</a>
-
-
-                                                <!-- <a class="btn btn-primary" href="" data-bs-toggle="modal" data-bs-target="#payment"><i class="fas fa-plus-circle me-2"></i>Unpaid</a> -->
-
+                                                <a class="btn btn-primary" href="{% url 'payment_confirm' j.id %}"><i class="fas fa-plus-circle me-2"></i>Unpaid</a>
                                                 {% endif %}
-
                                             </td>
-                                        
+                                        </tr>
+                                        {% endfor %}
+
+                                        {% for k in i.Registration_fees_semester.all %}
+                                        <tr class="add-row">
+                                            <td>
+                                                <!-- <input type="text" class="form-control" value=""> -->
+                                                <p>{{k.semester}}</p>
+                                            </td>
+                                            <td>
+                                                <!-- <input type="text" class="form-control" value=""> -->
+                                                <p>{{k.title}}</p>
+                                            </td>
+                                            <td>
+                                                <!-- <input type="text" class="form-control" value=""> -->
+                                                <p>{{k.amount}}</p>
+                                            </td>
+                                            <td>
+                                                <!-- <input type="text" class="form-control" value=""> -->
+                                                <p>0</p>
+                                            </td>
+                                            <td>
+                                                {% if k.is_paid is True %}
+                                                <p>Paid</p>
+                                                {% else %}
+                                                <a class="btn btn-primary" href="{% url 'registration_fee_confirm' k.id %}"><i class="fas fa-plus-circle me-2"></i>Unpaid</a>
+                                                {% endif %}
+                                            </td>
                                         </tr>
                                         {% endfor %}
 

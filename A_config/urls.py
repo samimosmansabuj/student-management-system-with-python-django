@@ -25,6 +25,7 @@ urlpatterns = [
     path('deparment/', include('department.urls')),
     path('account/', include('account.urls')),
     path('staff/', include('staff.urls')),
+    path('inbox/notifications/', include('notifications.urls', namespace='notifications')),
 ]
 
 from django.conf import settings

@@ -33,7 +33,7 @@ class Registration_fees(models.Model):
         ('Others', 'Others'),
     )
     
-    Student = models.ForeignKey(student, on_delete=models.DO_NOTHING, related_name='Student')
+    Student = models.ForeignKey(student, on_delete=models.CASCADE, related_name='Student')
     semester = models.ForeignKey(Semesters, on_delete=models.DO_NOTHING, related_name='Registration_fees_semester')
     
     title = models.CharField(max_length=50, default="Registrations Fees")

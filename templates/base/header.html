@@ -1,4 +1,5 @@
 {% load static %}
+{% load notifications_tags %}
 
 <div class="header">
 
@@ -40,11 +41,20 @@
                     </div>
                 </div>
             </div>
-        </li>
+        </li> -->
 
+
+
+        <!-- --------------Notifications Section Start---------- -->
         <li class="nav-item dropdown noti-dropdown me-2">
             <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
-                <img src="{% static 'img/icons/header-icon-05.svg' %}" alt="">
+                <img src="{% static 'img/icons/header-icon-05.svg' %}" alt=""> 
+                {% notifications_unread as unread_count %}
+                {% if unread_count %}
+                {% register_notify_callbacks callbacks='fill_notification_list, fill_notification_badge, my_special_notification_callback' %}
+
+                <sup><b><h6>{% live_notify_badge badge_class="badge" %}</h6></b></sup>
+                {% endif %}
             </a>
             <div class="dropdown-menu notifications">
                 <div class="topnav-dropdown-header">
@@ -53,12 +63,50 @@
                 </div>
                 <div class="noti-content">
                     <ul class="notification-list">
+                        <!-- {% live_notify_list list_class="dropdown-menu" %} -->
+                        {% if user.notifications.unread %}
+
+                        {% for i in user.notifications.unread %}
                         <li class="notification-message">
+                            <a>
+                                <div class="media d-flex">
+                                    <span class="avatar avatar-sm flex-shrink-0">
+                                        {% if request.user.is_teacher == True %}
+                                            {% if Teacher.teacher_image %}
+                                            <img class="avatar-img rounded-circle" alt="User Image" src="{{Teacher.teacher_image.url}}">
+                                            {% else %}
+                                            <i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i>
+                                            {% endif %}
+                                            
+                                        {% elif request.user.is_student == True %}
+                                            {% if Student.student_image %}
+                                            <img class="avatar-img rounded-circle" alt="User Image" src="{{Student.student_image.url}}">
+                                            {% else %}
+                                            <i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i>
+                                            {% endif %}
+
+                                        {% else %}
+                                        <i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i>
+                                        {% endif %}
+                                    </span>
+                                    <div class="media-body flex-grow-1">
+                                        <p class="noti-details">
+                                            <span class="noti-title">
+                                            {{i|safe}}
+                                        </span>
+                                        </p>
+                                    </div>
+                                    
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %}
+
+                        <!-- <li class="notification-message">
                             <a href="#">
                                 <div class="media d-flex">
                                     <span class="avatar avatar-sm flex-shrink-0">
-                                        <img class="avatar-img rounded-circle" alt="User Image"
-                                            src="{% static 'img/profiles/avatar-02.jpg' %}">
+                                        <i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i>
                                     </span>
                                     <div class="media-body flex-grow-1">
                                         <p class="noti-details"><span class="noti-title">Carlson Tech</span> has
@@ -66,67 +114,29 @@
                                         <p class="noti-time"><span class="notification-time">4 mins ago</span>
                                         </p>
                                     </div>
+                                    
                                 </div>
                             </a>
-                        </li>
+                        </li> -->
+                       
+
+                        {% else %}
                         <li class="notification-message">
-                            <a href="#">
-                                <div class="media d-flex">
-                                    <span class="avatar avatar-sm flex-shrink-0">
-                                        <img class="avatar-img rounded-circle" alt="User Image"
-                                            src="{% static 'img/profiles/avatar-11.jpg' %}">
-                                    </span>
-                                    <div class="media-body flex-grow-1">
-                                        <p class="noti-details"><span class="noti-title">International Software
-                                                Inc</span> has sent you a invoice in the amount of <span
-                                                class="noti-title">$218</span></p>
-                                        <p class="noti-time"><span class="notification-time">6 mins ago</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
+                            <p style="text-align: center;"><b>No Notifications</b></p>
                         </li>
-                        <li class="notification-message">
-                            <a href="#">
-                                <div class="media d-flex">
-                                    <span class="avatar avatar-sm flex-shrink-0">
-                                        <img class="avatar-img rounded-circle" alt="User Image"
-                                            src="{% static 'img/profiles/avatar-17.jpg' %}">
-                                    </span>
-                                    <div class="media-body flex-grow-1">
-                                        <p class="noti-details"><span class="noti-title">John Hendry</span> sent
-                                            a cancellation request <span class="noti-title">Apple iPhone
-                                                XR</span></p>
-                                        <p class="noti-time"><span class="notification-time">8 mins ago</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="notification-message">
-                            <a href="#">
-                                <div class="media d-flex">
-                                    <span class="avatar avatar-sm flex-shrink-0">
-                                        <img class="avatar-img rounded-circle" alt="User Image"
-                                            src="{% static 'img/profiles/avatar-13.jpg' %}">
-                                    </span>
-                                    <div class="media-body flex-grow-1">
-                                        <p class="noti-details"><span class="noti-title">Mercury Software
-                                                Inc</span> added a new product <span class="noti-title">Apple
-                                                MacBook Pro</span></p>
-                                        <p class="noti-time"><span class="notification-time">12 mins ago</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
+                        {% endif %}
+
                     </ul>
                 </div>
                 <div class="topnav-dropdown-footer">
-                    <a href="#">View all Notifications</a>
+                    <a>View all Notifications</a>
                 </div>
             </div>
-        </li> -->
+        </li>
+        <!-- --------------Notifications Section End---------- -->
+
+
+
 
         <li class="nav-item zoom-screen me-2">
             <a href="#" class="nav-link header-nav-list win-maximize">
@@ -136,7 +146,9 @@
 
         <li class="nav-item dropdown has-arrow new-user-menus">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+
                 {% if request.user.is_teacher == True %}
+
                 <span class="user-img">
                     {% if Teacher.teacher_image %}
                     <img class="rounded-circle" src="{{Teacher.teacher_image.url}}" width="31" alt="Soeng Souy">
@@ -150,10 +162,16 @@
 
                     </div>
                 </span>
+
                 {% elif request.user.is_student == True %}
+
                 <span class="user-img">
-                    <img class="rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" width="31"
-                        alt="Soeng Souy">
+                    {% if Student.student_image %}
+                    <img class="rounded-circle" src="{{Student.student_image.url}}" width="31" alt="Soeng Souy">
+                    {% else %}
+                    <img class="rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" width="31" alt="Soeng Souy">
+                    {% endif %}
+                    
                     <div class="user-text">
                         
                         <h6>{{Student.first_name}} {{Student.last_name}}</h6>
@@ -161,10 +179,11 @@
 
                     </div>
                 </span>
+
                 {% else %}
+
                 <span class="user-img">
-                    <img class="rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" width="31"
-                        alt="Soeng Souy">
+                    <img class="rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" width="31" alt="Soeng Souy">
                     <div class="user-text">
 
                         <h6>{{request.user.username|title}}</h6>
@@ -172,10 +191,14 @@
 
                     </div>
                 </span>
+
                 {% endif %}
+
             </a>
             <div class="dropdown-menu">
+
                 {% if request.user.is_teacher == True %}
+
                 <div class="user-header">
                     <div class="avatar avatar-sm">
                         {% if Teacher.teacher_image %}
@@ -192,7 +215,9 @@
   
                     </div>
                 </div>
+
                 {% elif request.user.is_student == True %}
+
                 <div class="user-header">
                     <div class="avatar avatar-sm">
                         <img src="{% static 'img/profiles/avatar-01.jpg' %}" alt="User Image"
@@ -205,7 +230,9 @@
  
                     </div>
                 </div>
+
                 {% else %}
+
                 <div class="user-header">
                     <div class="avatar avatar-sm">
                         <img src="{% static 'img/profiles/avatar-01.jpg' %}" alt="User Image"
@@ -218,6 +245,7 @@
                         
                     </div>
                 </div>
+
                 {% endif %}
 
                 {% if request.user.is_student == True %}
