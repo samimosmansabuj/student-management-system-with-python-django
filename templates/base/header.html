@@ -11,6 +11,7 @@
             <img src="{% static 'img/npi.png' %}" alt="Logo" width="30" height="30">
         </a>
     </div>
+    
     <div class="menu-toggle">
         <a href="javascript:void(0);" id="toggle_btn">
             <i class="fas fa-bars"></i>
@@ -153,7 +154,7 @@
                     {% if Teacher.teacher_image %}
                     <img class="rounded-circle" src="{{Teacher.teacher_image.url}}" width="31" alt="Soeng Souy">
                     {% else %}
-                    <img class="rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" width="31" alt="Soeng Souy">
+                    <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                     {% endif %}
                     <div class="user-text">
 
@@ -169,7 +170,7 @@
                     {% if Student.student_image %}
                     <img class="rounded-circle" src="{{Student.student_image.url}}" width="31" alt="Soeng Souy">
                     {% else %}
-                    <img class="rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" width="31" alt="Soeng Souy">
+                    <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                     {% endif %}
                     
                     <div class="user-text">
@@ -183,7 +184,7 @@
                 {% else %}
 
                 <span class="user-img">
-                    <img class="rounded-circle" src="{% static 'img/profiles/avatar-01.jpg' %}" width="31" alt="Soeng Souy">
+                    <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                     <div class="user-text">
 
                         <h6>{{request.user.username|title}}</h6>
@@ -204,7 +205,7 @@
                         {% if Teacher.teacher_image %}
                         <img src="{{Teacher.teacher_image.url}}" alt="User Image" class="avatar-img rounded-circle">
                         {% else %}
-                        <img src="{% static 'img/profiles/avatar-01.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+                        <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                         {% endif %}
                         
                     </div>
@@ -220,8 +221,11 @@
 
                 <div class="user-header">
                     <div class="avatar avatar-sm">
-                        <img src="{% static 'img/profiles/avatar-01.jpg' %}" alt="User Image"
-                            class="avatar-img rounded-circle">
+                        {% if Student.student_image %}
+                        <img src="{{Student.student_image.url}}" alt="User Image" class="avatar-img rounded-circle">
+                        {% else %}
+                        <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                        {% endif %}
                     </div>
                     <div class="user-text">
 
@@ -235,8 +239,7 @@
 
                 <div class="user-header">
                     <div class="avatar avatar-sm">
-                        <img src="{% static 'img/profiles/avatar-01.jpg' %}" alt="User Image"
-                            class="avatar-img rounded-circle">
+                        <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                     </div>
                     <div class="user-text">
 
@@ -250,8 +253,6 @@
 
                 {% if request.user.is_student == True %}
                 <a class="dropdown-item" href="{% url 'student_details' request.user.id %}">My Profile</a>
-                {% else %}
-                <a class="dropdown-item" href="">My Profile</a>
                 {% endif %}
                 <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
             </div>

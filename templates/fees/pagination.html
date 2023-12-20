@@ -1,0 +1,37 @@
+<div class="row">
+                                
+    <div class="col-sm-12 col-md-5">
+        <div class="dataTables_info" id="DataTables_Table_0_info" role="status"
+            aria-live="polite">Showing {{invoice.number}} to {{invoice.paginator.num_pages}}
+            of {{invoice.count}} entries</div>
+    </div>
+
+    <div class="col-sm-12 col-md-7">
+        <div class="dataTables_paginate paging_simple_numbers"
+            id="DataTables_Table_0_paginate">
+            <ul class="pagination">
+
+                
+                <li class="paginate_button page-item previous {% if not teachers.has_previous %}disabled{% endif %}" id="DataTables_Table_0_previous">
+                    <a href="{% if invoice.has_previous %}?page={{invoice.previous_page_number}}{% endif %}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                </li>
+                
+
+                {% for page in paginator.page_range %}
+                <li class="paginate_button page-item{% if page == invoice.number %} active{% endif %}"><a href="?page={{page}}"
+                        aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0"
+                        class="page-link">{{page}}</a></li>
+                {% endfor %}
+
+
+                
+                <li class="paginate_button page-item next {% if not invoice.has_next %}disabled{% endif %}" id="DataTables_Table_0_next"><a
+                        href="{% if invoice.has_next %}?page={{invoice.next_page_number}}{% endif %}"
+                        aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0"
+                        class="page-link">Next</a></li>
+                
+            </ul>
+        </div>
+    </div>
+
+</div>

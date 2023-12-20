@@ -140,8 +140,15 @@ Payment Details - National Polytechnic Institute
                                                     <label>Payment Method</label>
                                                     {% if installment.is_paid is False %}
                                                     <select name="payment_method" id="" class="form-control">
+
+                                                        {% if request.user.is_teacher == True or request.user.is_adminstaff == True %}
                                                         <option value="Cash">Cash</option>
+                                                        {% elif request.user.is_student == True %}
                                                         <option value="Bkash">Bkash</option>
+                                                        {% else %}
+                                                        <option value="-----">-----</option>
+                                                        {% endif %}
+                                                        
                                                     </select>
                                                     {% else %}
                                                     <input type="text" class="form-control" value="{{installment.payment_method}}" name="payment_method" readonly>
@@ -229,8 +236,15 @@ Payment Details - National Polytechnic Institute
                                                     <label>Payment Method</label>
                                                     {% if registration.is_paid is False %}
                                                     <select name="payment_method" id="" class="form-control">
+                                                        
+                                                        {% if request.user.is_teacher == True or request.user.is_adminstaff == True %}
                                                         <option value="Cash">Cash</option>
+                                                        {% elif request.user.is_student == True %}
                                                         <option value="Bkash">Bkash</option>
+                                                        {% else %}
+                                                        <option value="-----">-----</option>
+                                                        {% endif %}
+
                                                     </select>
                                                     {% else %}
                                                     <input type="text" class="form-control" value="{{registration.payment_method}}" name="payment_method" readonly>

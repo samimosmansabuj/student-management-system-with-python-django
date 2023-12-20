@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from xhtml2pdf import pisa
 from .models import *
 import random
-
+from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage, InvalidPage
 
 
 
@@ -118,6 +118,7 @@ def send_mail_student_add(email, username, password):
 # ---------------------Add Student Section Start------------------
 
 
+
 @login_required(login_url='login')
 def all_student(request):
     context = {}
@@ -129,15 +130,36 @@ def all_student(request):
         Teacher = teacher.objects.get(username=user)
         context['Teacher'] = Teacher
         depart = Department.objects.get(title=Teacher.department)
+        
         students = student.objects.filter(department=depart).order_by('roll_no')
     else:
         students = student.objects.all().order_by('roll_no')
     
+    context['student_count'] = students.__len__()
+    
+    item_per_page = 3
+    paginator = Paginator(students, item_per_page)
+    page = request.GET.get('page')
+    try:
+        Student = paginator.page(page)
+    except EmptyPage:
+        Student = paginator.page(1)
+    except PageNotAnInteger:
+        Student = paginator.page(1)
+    except InvalidPage:
+        Student = paginator.page(1)
+    
+    print(paginator)
+    
     department = Department.objects.all()
     context['department'] = department
-    context['students'] = students
+    context['students'] = Student
+    context['paginator'] = paginator
+    context['item_per_page'] = item_per_page
 
     return render(request, 'student/student_list.html', context)
+
+
 
 @login_required(login_url='login')
 def filter_student(request):
@@ -290,7 +312,20 @@ def student_promotion(request):
 @login_required(login_url='login')
 def invoice_list(request):
     invoices = Invoice.objects.all().order_by('-id')
-    context = {'invoices': invoices}
+    item_per_page = 5
+    paginator = Paginator(invoices, item_per_page)
+    page = request.GET.get('page')
+    try:
+        invoice = paginator.page(page)
+    except EmptyPage:
+        invoice = paginator.page(1)
+    except PageNotAnInteger:
+        invoice = paginator.page(1)
+    except InvalidPage:
+        invoice = paginator.page(1)
+    
+    
+    context = {'invoice': invoices, 'paginator': paginator}
     return render(request, 'fees/invoice_list.html', context)
 
 

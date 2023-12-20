@@ -18,10 +18,11 @@
                 
 
                 {% for page in paginator.page_range %}
-                <li class="paginate_button page-item{% if page == depart.number %} active{% endif %}"><a href="?page={{page}}"
+                <li class="paginate_button page-item{% if page == teachers.number %} active{% endif %}"><a href="?page={{page}}"
                         aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0"
                         class="page-link">{{page}}</a></li>
                 {% endfor %}
+
 
                 
                 <li class="paginate_button page-item next {% if not teachers.has_next %}disabled{% endif %}" id="DataTables_Table_0_next"><a
