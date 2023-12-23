@@ -87,13 +87,6 @@ class Invoice(models.Model):
     
     def __str__(self) -> str:
         return self.Invoice_id
-    
-    
-    
-    
-
-
-
 
 
 

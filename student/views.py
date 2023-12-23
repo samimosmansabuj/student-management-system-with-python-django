@@ -324,8 +324,7 @@ def invoice_list(request):
     except InvalidPage:
         invoice = paginator.page(1)
     
-    
-    context = {'invoice': invoices, 'paginator': paginator}
+    context = {'invoice': invoice, 'paginator': paginator}
     return render(request, 'fees/invoice_list.html', context)
 
 
